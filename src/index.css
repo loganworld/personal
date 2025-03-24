@@ -1,0 +1,112 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 220 20% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 10%;
+
+    --primary: 220 20% 10%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 220 10% 90%;
+    --secondary-foreground: 220 20% 10%;
+
+    --muted: 220 10% 94%;
+    --muted-foreground: 220 15% 40%;
+
+    --accent: 220 10% 94%;
+    --accent-foreground: 220 20% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 10% 84%;
+    --input: 220 10% 84%;
+    --ring: 220 20% 60%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    @apply leading-relaxed tracking-wide;
+  }
+
+  .fade-in {
+    @apply opacity-0 animate-fadeIn;
+  }
+
+  .slide-up {
+    @apply opacity-0 translate-y-5 animate-slideUp;
+  }
+
+  .slide-down {
+    @apply opacity-0 -translate-y-5 animate-slideDown;
+  }
+  
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+  
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+  
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+  
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+  
+  .animation-delay-500 {
+    animation-delay: 500ms;
+  }
+
+  .glass {
+    @apply bg-white/50 backdrop-blur-lg border border-white/30 shadow-sm;
+  }
+  
+  .content-container {
+    @apply max-w-4xl mx-auto px-6 py-12 md:py-20;
+  }
+  
+  .blog-content {
+    @apply prose prose-slate max-w-none;
+  }
+  
+  .blog-content h1, .blog-content h2, .blog-content h3, .blog-content h4 {
+    @apply font-sans font-medium;
+  }
+}
