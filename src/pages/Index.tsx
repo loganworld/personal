@@ -1,86 +1,71 @@
-
-import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import PostList from '@/components/BlogList';
-import { ArrowDown, ArrowUpRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useMediumFeed } from '@/hooks/useMediumFeed';
+import { ArrowUpRight } from 'lucide-react';
 
 const Index = () => {
-  const contentRef = useRef<HTMLDivElement>(null);
-  
-  const scrollToContent = () => {
-    contentRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-  
   useEffect(() => {
-    // Reset scroll position when component mounts
     window.scrollTo(0, 0);
   }, []);
+
+  const { items, status } = useMediumFeed('loganworld');
+
+  const interests = [
+    { name: 'AI', color: 'text-blue-500' },
+    { name: 'Blockchain', color: 'text-green-500' },
+    { name: 'Gaming', color: 'text-purple-500' },
+    { name: 'DeFi', color: 'text-orange-500' },
+  ];
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center pt-16 px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="mb-6 slide-down animation-delay-100">
-            <span className="inline-block px-4 py-2 mb-4 text-sm rounded-full border border-border bg-secondary/50">
-              Welcome to my personal website
-            </span>
-          </div>
-          
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium mb-6 slide-down animation-delay-200">
-            Thoughts on Blockchain,<br />Web3 &amp; Decentralization
-          </h1>
-          
-          <p className="text-xl text-muted-foreground mb-10 slide-up animation-delay-300">
-            I write about technology, crypto economics, and the future of the internet.
-            Here you'll find all my articles from Medium and other platforms.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center slide-up animation-delay-400">
-            <button 
-              onClick={scrollToContent}
-              className="inline-flex items-center justify-center hover:text-primary transition-colors"
-              aria-label="Scroll to content"
-            >
-              <span className="mr-2">Explore my posts</span>
-              <ArrowDown className="animate-bounce" size={20} />
-            </button>
-            
-            <Link to="/temp-post" className="inline-flex items-center justify-center text-primary hover:underline">
-              <span>Read my latest post</span>
-              <ArrowUpRight size={18} className="ml-1" />
-            </Link>
+      <main className="flex-grow container max-w-3xl mx-auto px-6 py-16">
+        <div className="bg-secondary/30 rounded-lg p-6 mb-12 shadow-sm">
+          <h2 className="text-2xl font-medium mb-4 text-primary">Interests</h2>
+          <div className="flex flex-wrap gap-3">
+            {interests.map((interest) => (
+              <span
+                key={interest.name}
+                className={`px-4 py-2 rounded-full bg-secondary/50 ${interest.color} font-medium hover:scale-105 transition-all duration-200`}
+              >
+                {interest.name}
+              </span>
+            ))}
           </div>
         </div>
-      </section>
-      
-      {/* Posts Content */}
-      <section 
-        ref={contentRef} 
-        className="py-20 bg-secondary/20"
-      >
-        <div className="max-w-5xl mx-auto mb-12 px-6 text-center">
-          <h2 className="text-3xl font-medium mb-4">Latest Posts</h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            Discover my latest thoughts and insights on blockchain technology, 
-            decentralized systems, and the future of the web.
-          </p>
-          <div className="mt-6">
-            <Link to="/temp-post">
-              <Button variant="outline" className="hover:bg-primary hover:text-primary-foreground">
-                View temporary post
-              </Button>
-            </Link>
-          </div>
+
+        <div className="space-y-8">
+          {status === 'loading' && (
+            <div className="text-muted-foreground">Loading posts...</div>
+          )}
+          
+          {status === 'error' && (
+            <div className="text-muted-foreground">Failed to load posts. Please try again later.</div>
+          )}
+          
+          {status === 'success' && items.map((post) => (
+            <article key={post.id} className="group">
+              <a 
+                href={post.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex justify-between items-start py-4 hover:bg-secondary/20 -mx-4 px-4 rounded-lg transition-colors"
+              >
+                <div>
+                  <time className="text-sm text-foreground/80">{post.publishDate}</time>
+                  <h2 className="text-xl font-medium mt-1 text-[#77e1cd] hover:text-[#5bc4ae] transition-colors">
+                    {post.title}
+                  </h2>
+                </div>
+                <ArrowUpRight className="h-5 w-5 mt-1 text-muted-foreground group-hover:text-primary transition-colors" />
+              </a>
+            </article>
+          ))}
         </div>
-        
-        <PostList username="yourusername" />
-      </section>
+      </main>
       
       <Footer />
     </div>

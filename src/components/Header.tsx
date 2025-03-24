@@ -1,6 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { ThemeToggle } from './ThemeToggle';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -21,7 +21,7 @@ const Header = () => {
     <header 
       className={`fixed top-0 left-0 right-0 z-50 py-4 px-6 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-white/80 shadow-sm backdrop-blur-md' 
+          ? 'bg-background/80 shadow-sm backdrop-blur-md' 
           : 'bg-transparent'
       }`}
     >
@@ -30,16 +30,19 @@ const Header = () => {
           to="/" 
           className="text-xl font-mono font-medium tracking-tighter transition-opacity hover:opacity-70"
         >
-          yourname.eth
+          Logan Li
         </Link>
         
-        <div className="space-x-8">
-          <NavLink to="/" isActive={isActive('/')}>
-            Blog
-          </NavLink>
-          <NavLink to="/about" isActive={isActive('/about')}>
-            About
-          </NavLink>
+        <div className="flex items-center space-x-8">
+          <div className="space-x-8">
+            <NavLink to="/" isActive={isActive('/')}>
+              Blog
+            </NavLink>
+            <NavLink to="/about" isActive={isActive('/about')}>
+              About
+            </NavLink>
+          </div>
+          <ThemeToggle />
         </div>
       </nav>
     </header>

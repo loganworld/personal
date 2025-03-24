@@ -1,126 +1,154 @@
-
 import { useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ExternalLink, Github, Linkedin, Mail, Twitter } from 'lucide-react';
+import { ArrowRight, ExternalLink, Github, Send, Mail, Twitter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
-const About = () => {
-  useEffect(() => {
-    // Reset scroll position when component mounts
-    window.scrollTo(0, 0);
-  }, []);
-  
-  return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-grow pt-24 pb-16">
-        <div className="content-container">
-          <div className="max-w-3xl mx-auto">
-            <span className="inline-block px-4 py-1.5 mb-6 text-sm rounded-full border border-border bg-secondary/50 slide-up">
-              About Me
-            </span>
-            
-            <h1 className="text-4xl md:text-5xl font-medium mb-8 slide-up animation-delay-100">
-              Hello, I'm Your Name. <br />
-              Blockchain researcher & writer.
-            </h1>
-            
-            <div className="prose prose-slate max-w-none slide-up animation-delay-200">
-              <p className="text-xl leading-relaxed mb-6">
-                I'm a blockchain researcher, writer, and enthusiast focused on the intersection of
-                cryptography, distributed systems, and economic incentives. I write regularly
-                about Web3, decentralized technologies, and the future of the internet.
-              </p>
-              
-              <p className="mb-6">
-                My work primarily focuses on explaining complex blockchain concepts in accessible
-                ways, exploring the potential of Web3 technologies, and analyzing emerging trends
-                in the decentralized ecosystem.
-              </p>
-              
-              <p className="mb-6">
-                Previously, I worked at [Company Name] where I [brief description of previous work].
-                I hold a degree in [Field] from [University].
-              </p>
-              
-              <h2 className="text-2xl font-medium mt-12 mb-4">Writing</h2>
-              <p className="mb-6">
-                I publish regularly on Medium, where I cover topics including blockchain architecture,
-                token economics, smart contract development, and decentralized governance. My goal is
-                to bridge the gap between technical concepts and practical understanding, making these
-                technologies accessible to everyone.
-              </p>
-              
-              <div className="flex my-8">
-                <Link to="/">
-                  <Button>
-                    Browse my articles
-                    <ArrowRight size={16} className="ml-2" />
-                  </Button>
-                </Link>
-              </div>
-              
-              <h2 className="text-2xl font-medium mt-12 mb-4">Get in Touch</h2>
-              <p className="mb-6">
-                I'm always open to interesting conversations, collaboration opportunities, or
-                speaking engagements related to blockchain technology and Web3.
-              </p>
-              
-              <div className="flex flex-wrap gap-4 my-8">
-                <SocialButton
-                  href="mailto:your.email@example.com"
-                  icon={<Mail size={18} />}
-                  label="Email"
-                />
-                <SocialButton
-                  href="https://twitter.com/yourusername"
-                  icon={<Twitter size={18} />}
-                  label="Twitter"
-                />
-                <SocialButton
-                  href="https://github.com/yourusername"
-                  icon={<Github size={18} />}
-                  label="GitHub"
-                />
-                <SocialButton
-                  href="https://linkedin.com/in/yourusername"
-                  icon={<Linkedin size={18} />}
-                  label="LinkedIn"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-      
-      <Footer />
-    </div>
-  );
-};
+import { socialLinks } from '@/lib/socialLinks';
 
 interface SocialButtonProps {
   href: string;
   icon: React.ReactNode;
   label: string;
+  className?: string;
 }
 
-const SocialButton = ({ href, icon, label }: SocialButtonProps) => {
+const SocialButton = ({ href, icon, label, className = "" }: SocialButtonProps) => {
   const isExternal = href.startsWith('http') || href.startsWith('mailto');
-  
+
   return (
     <a
       href={href}
       target={isExternal ? "_blank" : undefined}
       rel={isExternal ? "noopener noreferrer" : undefined}
-      className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-secondary hover:bg-secondary/80 transition-colors"
+      className={`inline-flex items-center gap-2 px-4 py-2 rounded-md bg-primary/10 hover:bg-primary/20 transition-all duration-300 border border-primary/20 hover:border-primary/40 ${className}`}
     >
       {icon}
       <span>{label}</span>
       {isExternal && <ExternalLink size={14} />}
     </a>
+  );
+};
+
+const HeroSection = () => {
+  const getIcon = (iconName: string) => {
+    switch (iconName) {
+      case 'github':
+        return <Github size={18} />;
+      case 'twitter':
+        return <Twitter size={18} />;
+      case 'mail':
+        return <Mail size={18} />;
+      case 'send':
+        return <Send size={18} />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <section className="relative h-[70vh] min-h-[600px] flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/10 via-background to-secondary/20 mt-16">
+      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      <div className="content-container relative z-10">
+        <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="space-y-8">
+            <span className="inline-block px-4 py-1.5 text-sm rounded-full border border-primary/30 bg-primary/5 text-primary">
+              About Me
+            </span>
+            <h1 className="text-6xl md:text-6xl font-medium ">
+              Hello, I'm Logan Li
+            </h1>
+            <p className="text-2xl text-muted-foreground leading-relaxed">
+              Software Engineer & Entrepreneur passionate about cutting-edge technology
+            </p>
+            <div className="flex flex-wrap gap-4 pt-4">
+              {Object.entries(socialLinks).map(([key, link], index) => (
+                <SocialButton
+                  key={key}
+                  href={link.url}
+                  icon={getIcon(link.icon || key)}
+                  label={link.name}
+                  className={index === 0 ? "hover:scale-105 transition-transform" : ""}
+                />
+              ))}
+            </div>
+          </div>
+          <div className="relative">
+            <div className="aspect-square rounded-2xl overflow-hidden border-4 border-primary/20 shadow-2xl">
+              <img
+                src="/img/logan-li.jpg"
+                alt="Logan Li"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ContentSection = () => (
+  <section className="py-8 bg-background">
+    <div className="content-container">
+      <div className="max-w-3xl mx-auto space-y-16">
+        <div className="space-y-6">
+          <h2 className="text-3xl font-medium text-foreground">About Me</h2>
+          <div className="space-y-4">
+            <p className="text-lg leading-relaxed text-muted-foreground">
+              I've worked with multiple blockchain startups, DeFi projects, and AI-driven platforms, helping shape the future of decentralized applications.
+            </p>
+            <p className="text-lg leading-relaxed text-muted-foreground">
+              I have contributed to and led several projects, including DeFiTankLand and Hogwarz Game, where I explored the intersection of blockchain, gaming, and decentralized finance. My expertise spans smart contracts, AI integration, and innovative product development in Web3.
+            </p>
+            <p className="text-lg leading-relaxed text-muted-foreground">
+              I'm deeply interested in how AI and blockchain can revolutionize industries, solve real-world problems, and create new value. Through my writing, I share insights, opinions, and analysis on emerging AI technologies and their real-world applications with blockchain.
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <h2 className="text-3xl font-medium text-foreground">Writing</h2>
+          <p className="text-lg leading-relaxed text-muted-foreground">
+            I publish regularly on Medium, where I cover topics including blockchain architecture,
+            token economics, smart contract development, and decentralized governance. My goal is
+            to bridge the gap between technical concepts and practical understanding, making these
+            technologies accessible to everyone.
+          </p>
+          <Link to="/">
+            <Button className="mt-6">
+              Browse my articles
+              <ArrowRight size={16} className="ml-2" />
+            </Button>
+          </Link>
+        </div>
+
+        <div className="space-y-6">
+          <h2 className="text-3xl font-medium text-foreground">Get in Touch</h2>
+          <p className="text-lg leading-relaxed text-muted-foreground">
+            I'm always open to interesting conversations, collaboration opportunities, or
+            speaking engagements related to blockchain technology, AI, and Web3.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+const About = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <main className="flex-grow">
+        <HeroSection />
+        <ContentSection />
+      </main>
+      <Footer />
+    </div>
   );
 };
 
