@@ -76,7 +76,7 @@ const HeroSection = () => {
           <div className="relative">
             <div className="aspect-square rounded-2xl overflow-hidden border-4 border-primary/20 shadow-2xl">
               <img
-                src="/img/logan-li.jpg"
+                src="https://loganworld.github.io/personal/img/logan-li.jpg"
                 alt="Logan Li"
                 className="w-full h-full object-cover"
               />
